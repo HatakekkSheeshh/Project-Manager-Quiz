@@ -11,7 +11,7 @@ document.getElementById('quizForm').addEventListener('submit', function(event) {
     };
 
     let score = 0;
-    let resultText = '';
+    let resultHTML = '';
 
     // Check each question and compare the selection with the correct answer
     for (let q in answers) {
@@ -19,15 +19,17 @@ document.getElementById('quizForm').addEventListener('submit', function(event) {
         if (selected) {
             if (selected.id === answers[q]) {
                 score++;
-                resultText += `Question ${q.substring(1)}: Correct\n`;
+                resultHTML += `<p>Question ${q.substring(1)}: <span style="color: green;">✔️ Correct</span></p>`;
             } else {
-                resultText += `Question ${q.substring(1)}: Wrong\n`;
+                const correctLabel = document.querySelector(`label[for="${answers[q]}"]`).textContent;
+                resultHTML += `<p>Question ${q.substring(1)}: <span style="color: red;">❌ Wrong</span> - Correct answer: ${correctLabel}</p>`;
             }
         } else {
-            resultText += `Question ${q.substring(1)}: Not answered\n`;
+            const correctLabel = document.querySelector(`label[for="${answers[q]}"]`).textContent;
+            resultHTML += `<p>Question ${q.substring(1)}: <span style="color: orange;">Not answered</span> - Correct answer: ${correctLabel}</p>`;
         }
     }
 
-    resultText = `You scored ${score} out of 5.\n` + resultText;
-    document.getElementById('result').textContent = resultText;
+    resultHTML = `<h3>You scored ${score} out of 5.</h3>` + resultHTML;
+    document.getElementById('result').innerHTML = resultHTML;
 });
